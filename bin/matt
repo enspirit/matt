@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'matt'
+Matt::Command.new.call(ARGV)
