@@ -4,13 +4,20 @@ module Matt
 
     attr_accessor :stdout
     attr_accessor :stderr
-    attr_accessor :configuration
     attr_accessor :output_format
 
     def initialize
-      configuration = Configuration.new(Path.pwd)
       @output_format = :csv
       yield(self) if block_given?
+    end
+
+    def configuration
+      @configuration ||= Configuration.new(Path.pwd)
+    end
+    attr_writer :configuration
+
+    def has_configuration?
+      !@configuration.nil?
     end
 
     def call(argv)
@@ -52,6 +59,18 @@ module Matt
     def opt_parser
       OptionParser.new do |opts|
         opts.banner = "Usage: matt [options] COMMAND [args]"
+        opts.on("-f FOLDER") do |folder|
+          p = Path(folder)
+          if has_configuration?
+            stderr.puts "-f must be used before other configuration options"
+            exit
+          elsif p.exists? && p.directory?
+            self.configuration = Configuration.new(p)
+          else
+            stderr.puts "No such folder: #{folder}"
+            exit
+          end
+        end
         opts.on("--json") do
           self.output_format = :json
         end
