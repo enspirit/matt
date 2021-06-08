@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.executables = (Dir["bin/*"]).collect{|f| File.basename(f)}
 
   s.add_dependency "path", ">= 2.0", "< 3.0"
-  s.add_dependency "bmg", ">= 0.18.4", "< 0.19"
+  s.add_dependency "bmg", ">= 0.18.5", "< 0.19"
 
   s.add_development_dependency "rake", ">= 13.0", "< 14.0"
   s.add_development_dependency "rspec", ">= 3.10", "< 4.0"
