@@ -3,12 +3,16 @@ module Matt
 
     def initialize(folder)
       @folder = folder
+      @stdout = $stdout
+      @stderr = $stderr
       @csv_options = {
         :write_headers => true
       }
       @at_predicate = Matt.yesterday_predicate
+      yield(self) if block_given?
     end
     attr_accessor :folder
+    attr_accessor :stdout, :stderr
     attr_accessor :csv_options
     attr_accessor :at_predicate
 

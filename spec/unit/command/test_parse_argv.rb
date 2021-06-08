@@ -8,7 +8,10 @@ module Matt
       }
 
       subject{
-        command.parse_argv(argv)
+        command.on_configuration{|c|
+          c.stdout = StringIO.new
+          c.stderr = StringIO.new
+        }.parse_argv(argv)
       }
 
       context '-f' do

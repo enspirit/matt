@@ -22,6 +22,7 @@ module Matt
 
 end # module Matt
 require_relative 'matt/version'
+require_relative 'matt/support'
 require_relative 'matt/datasource'
 require_relative 'matt/measure'
 require_relative 'matt/exporter'

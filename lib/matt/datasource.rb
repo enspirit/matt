@@ -1,5 +1,7 @@
 module Matt
   module Datasource
+    include Support::Puts
+
     attr_accessor :name
     attr_accessor :configuration
 

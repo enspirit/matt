@@ -1,23 +1,30 @@
 require 'optparse'
 module Matt
   class Command
+    include Support::Puts
 
-    attr_accessor :stdout
-    attr_accessor :stderr
     attr_accessor :exitcode
     attr_accessor :output_format
 
     def initialize
-      @stdout = $stdout
-      @stderr = $stderr
       @output_format = :csv
       yield(self) if block_given?
     end
 
-    def configuration
-      @configuration ||= Configuration.new(Path.pwd)
+    def on_configuration(&bl)
+      @on_configuration = bl
+      self
     end
-    attr_writer :configuration
+
+    def configuration
+      return @configuration if @configuration
+      self.configuration = Configuration.new(Path.pwd)
+    end
+
+    def configuration=(c)
+      @on_configuration.call(c) if @on_configuration
+      @configuration = c
+    end
 
     def has_configuration?
       !!@configuration
@@ -124,16 +131,15 @@ module Matt
       abort
     end
 
+    def datasource_exists!(name)
+      d = configuration.datasources.send(name.to_sym)
+      return d if d
+      puts_err "No such datasource #{name}"
+      abort
+    end
+
     def abort
       throw :abort
-    end
-
-    def puts_out(*args, &bl)
-      stdout.send(:puts, *args, &bl)
-    end
-
-    def puts_err(*args, &bl)
-      stderr.send(:puts, *args, &bl)
     end
 
   end # class Command
