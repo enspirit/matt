@@ -11,31 +11,31 @@ module Matt
         command.parse_argv(argv)
       }
 
-      context "with -f and a valid folder" do
-        let(:folder){
-          fixtures_folder/"foobar"
-        }
+      context '-f' do
         let(:argv){
           %w{-f} + [folder.to_s]
         }
 
-        it 'sets the configuration object to the path' do
-          expect(subject).to eql([])
-          expect(command.configuration.folder).to eql(folder)
+        context "with a valid folder" do
+          let(:folder){
+            fixtures_folder/"foobar"
+          }
+
+          it 'sets the configuration object to the path' do
+            expect(subject).to eql([])
+            expect(command.configuration.folder).to eql(folder)
+          end
         end
-      end
 
-      context "with -f and a invalid folder" do
-        let(:folder){
-          fixtures_folder/"nosuchone"
-        }
-        let(:argv){
-          %w{-f} + [folder.to_s]
-        }
+        context "with an invalid folder" do
+          let(:folder){
+            fixtures_folder/"nosuchone"
+          }
 
-        it 'fails' do
-          expect{ subject }.to throw_symbol(:abort)
-          expect(command.stderr.string).to match(/No such folder/)
+          it 'fails' do
+            expect{ subject }.to throw_symbol(:abort)
+            expect(command.stderr.string).to match(/No such folder/)
+          end
         end
       end
 

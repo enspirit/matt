@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 require 'matt'
-Matt::Command.new.call(ARGV)
+ok = Matt::Command.new.call(ARGV)
+exit(1) unless ok

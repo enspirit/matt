@@ -4,6 +4,7 @@ module Matt
 
     attr_accessor :stdout
     attr_accessor :stderr
+    attr_accessor :exitcode
     attr_accessor :output_format
 
     def initialize
@@ -27,25 +28,31 @@ module Matt
     end
 
     def call(argv)
+      ok = false
       catch :abort do
-        argv = parse_argv(argv)
-
-        if argv.empty?
-          puts_out opt_parser
-          abort
-        end
-
-        meth = :"do_#{argv.first}"
-        if self.respond_to?(meth, true)
-          send(meth, argv[1..-1])
-        else
-          puts_err "No such command #{argv.first}"
-          abort
-        end
+        parse_argv(argv)
+        _call(argv)
+        ok = true
       end
+      ok
     end
 
   protected
+
+    def _call(argv)
+      if argv.empty?
+        puts_out opt_parser
+        abort
+      end
+
+      meth = :"do_#{argv.first}"
+      if self.respond_to?(meth, true)
+        send(meth, argv[1..-1])
+      else
+        puts_err "No such command #{argv.first}"
+        abort
+      end
+    end
 
     def do_show(argv)
       argv_count!(argv, 1)
