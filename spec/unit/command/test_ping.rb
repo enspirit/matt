@@ -18,6 +18,7 @@ module Matt
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("Ok.\n")
+          expect(command.exitcode).to eql(0)
         end
       end
 
@@ -28,6 +29,7 @@ module Matt
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("Ok.\n")
+          expect(command.exitcode).to eql(0)
         end
       end
 
@@ -37,6 +39,7 @@ module Matt
         it 'works as expected' do
           subject
           expect(command.stderr.string).to eql("No such datasource nosuchone\n")
+          expect(command.exitcode).to eql(1)
         end
       end
 

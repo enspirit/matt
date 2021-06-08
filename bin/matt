@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'matt'
-ok = Matt::Command.new.call(ARGV)
-exit(1) unless ok
+exitcode = Matt::Command.new.call(ARGV)
+exit(exitcode)

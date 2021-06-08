@@ -19,6 +19,7 @@ module Matt
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("#{expected}\n")
+          expect(command.exitcode).to eql(0)
         end
       end
 
@@ -30,6 +31,7 @@ module Matt
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("#{expected}")
+          expect(command.exitcode).to eql(0)
         end
       end
 
@@ -40,6 +42,7 @@ module Matt
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("\n")
+          expect(command.exitcode).to eql(0)
         end
       end
 

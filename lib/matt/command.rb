@@ -41,7 +41,7 @@ module Matt
         _call(argv)
         ok = true
       end
-      ok
+      self.exitcode = ok ? 0 : 1
     end
 
   protected
