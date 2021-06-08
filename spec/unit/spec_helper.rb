@@ -4,13 +4,17 @@ require 'matt'
 
 module SpecHelper
 
-  def helloworld_config
-    Matt::Configuration.new(Path.dir.parent/"fixtures/helloworld")
+  def fixtures_folder
+    Path.dir.parent/"fixtures"
   end
 
-  def base_command
+  def helloworld_config
+    Matt::Configuration.new(fixtures_folder/"helloworld")
+  end
+
+  def base_command(set_config = true)
     Matt::Command.new{|c|
-      c.configuration = helloworld_config
+      c.configuration = helloworld_config if set_config
       c.stdout = StringIO.new
       c.stderr = StringIO.new
     }

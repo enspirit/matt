@@ -7,6 +7,8 @@ module Matt
     attr_accessor :output_format
 
     def initialize
+      @stdout = $stdout
+      @stderr = $stderr
       @output_format = :csv
       yield(self) if block_given?
     end
@@ -17,16 +19,20 @@ module Matt
     attr_writer :configuration
 
     def has_configuration?
-      !@configuration.nil?
+      !!@configuration
+    end
+
+    def parse_argv(argv)
+      opt_parser.parse!(argv)
     end
 
     def call(argv)
-      catch :exit do
-        opt_parser.parse!(argv)
+      catch :abort do
+        argv = parse_argv(argv)
 
         if argv.empty?
-          puts opt_parser
-          throw :exit
+          puts_out opt_parser
+          abort
         end
 
         meth = :"do_#{argv.first}"
@@ -34,7 +40,7 @@ module Matt
           send(meth, argv[1..-1])
         else
           puts_err "No such command #{argv.first}"
-          throw :exit
+          abort
         end
       end
     end
@@ -46,9 +52,9 @@ module Matt
       m = measure_exists!(argv.first)
       case of = output_format
       when :json
-        puts JSON.pretty_generate(m.full_data)
+        puts_out JSON.pretty_generate(m.full_data)
       when :csv
-        puts m.full_data.to_csv(configuration.csv_options)
+        puts_out m.full_data.to_csv(configuration.csv_options)
       else
         puts_err "Unknown format #{of}"
       end
@@ -63,12 +69,12 @@ module Matt
           p = Path(folder)
           if has_configuration?
             puts_err "-f must be used before other configuration options"
-            exit
+            abort
           elsif p.exists? && p.directory?
             self.configuration = Configuration.new(p)
           else
             puts_err "No such folder: #{folder}"
-            exit
+            abort
           end
         end
         opts.on("--json") do
@@ -78,12 +84,12 @@ module Matt
           self.output_format = :csv
         end
         opts.on('--version', "Show version number") do
-          puts "Matt v#{VERSION} - (c) Enspirit SRL"
-          throw :exit
+          puts_out "Matt v#{VERSION} - (c) Enspirit SRL"
+          abort
         end
         opts.on("-h", "--help", "Prints this help") do
-          puts opts
-          throw :exit
+          puts_out opts
+          abort
         end
       end
     end
@@ -91,17 +97,21 @@ module Matt
     def argv_count!(argv, n)
       return if argv.size == n
       puts_err "#{n} arguments expected, got #{argv.size}"
-      exit
+      abort
     end
 
     def measure_exists!(name)
       m = configuration.measures.send(name.to_sym)
       return m if m
       puts_err "No such measure #{name}"
-      exit
+      abort
     end
 
-    def puts(*args, &bl)
+    def abort
+      throw :abort
+    end
+
+    def puts_out(*args, &bl)
       stdout.send(:puts, *args, &bl)
     end
 
