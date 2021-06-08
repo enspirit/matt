@@ -14,7 +14,7 @@ module Matt
         let(:argv){ %w{show --json account_creations} }
 
         it 'works as expected' do
-          expected = JSON.pretty_generate(helloworld_config.datasources.main.account_creations)
+          expected = JSON.pretty_generate(helloworld_config.ds.main.account_creations)
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("#{expected}\n")
@@ -25,7 +25,7 @@ module Matt
         let(:argv){ %w{show --csv account_creations} }
 
         it 'works as expected' do
-          expected = helloworld_config.datasources.main.account_creations.to_csv
+          expected = helloworld_config.ds.main.account_creations.to_csv(helloworld_config.csv_options)
           subject
           expect(command.stderr.string).to eql("")
           expect(command.stdout.string).to eql("#{expected}")

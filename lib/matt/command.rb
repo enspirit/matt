@@ -48,7 +48,7 @@ module Matt
       when :json
         puts JSON.pretty_generate(m.full_data)
       when :csv
-        puts m.full_data.to_csv
+        puts m.full_data.to_csv(configuration.csv_options)
       else
         puts_err "Unknown format #{of}"
       end

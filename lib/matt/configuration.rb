@@ -3,8 +3,12 @@ module Matt
 
     def initialize(folder)
       @folder = folder
+      @csv_options = {
+        :write_headers => true
+      }
     end
     attr_reader :folder
+    attr_reader :csv_options
 
     def datasources_folder
       folder/"datasources"
@@ -13,6 +17,7 @@ module Matt
     def datasources
       @datasources ||= load_dynamic_objects(datasources_folder)
     end
+    alias :ds :datasources
 
     def measures_folder
       folder/"measures"
@@ -21,6 +26,7 @@ module Matt
     def measures
       @measures ||= load_dynamic_objects(measures_folder)
     end
+    alias :ms :measures
 
     def exporters_folder
       folder/"exporters"
@@ -29,6 +35,7 @@ module Matt
     def exporters
       @exporters ||= load_dynamic_objects(exporters_folder)
     end
+    alias :es :exporters
 
   private
 
