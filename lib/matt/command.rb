@@ -75,6 +75,17 @@ module Matt
       end
     end
 
+    def do_ping(argv)
+      which_ones = if argv.empty?
+        configuration.datasources.to_h.values
+      else
+        argv.map{|arg| datasource_exists!(arg) }
+      end
+      which_ones.each do |d|
+        d.ping
+      end
+    end
+
   protected
 
     def opt_parser

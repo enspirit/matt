@@ -26,5 +26,9 @@ class Main
     ])
   end
 
+  def ping
+    puts "Ok."
+  end
+
 end
 Main.new
