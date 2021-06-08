@@ -33,7 +33,7 @@ module Matt
         if self.respond_to?(meth, true)
           send(meth, argv[1..-1])
         else
-          stderr.puts "No such command #{argv.first}"
+          puts_err "No such command #{argv.first}"
           throw :exit
         end
       end
@@ -50,7 +50,7 @@ module Matt
       when :csv
         puts m.full_data.to_csv
       else
-        stderr.puts "Unknown format #{of}"
+        puts_err "Unknown format #{of}"
       end
     end
 
@@ -62,12 +62,12 @@ module Matt
         opts.on("-f FOLDER") do |folder|
           p = Path(folder)
           if has_configuration?
-            stderr.puts "-f must be used before other configuration options"
+            puts_err "-f must be used before other configuration options"
             exit
           elsif p.exists? && p.directory?
             self.configuration = Configuration.new(p)
           else
-            stderr.puts "No such folder: #{folder}"
+            puts_err "No such folder: #{folder}"
             exit
           end
         end
@@ -90,19 +90,23 @@ module Matt
 
     def argv_count!(argv, n)
       return if argv.size == n
-      stderr.puts "#{n} arguments expected, got #{argv.size}"
+      puts_err "#{n} arguments expected, got #{argv.size}"
       exit
     end
 
     def measure_exists!(name)
       m = configuration.measures.send(name.to_sym)
       return m if m
-      stderr.puts "No such measure #{name}"
+      puts_err "No such measure #{name}"
       exit
     end
 
     def puts(*args, &bl)
-      stdout.puts(*args, &bl)
+      stdout.send(:puts, *args, &bl)
+    end
+
+    def puts_err(*args, &bl)
+      stderr.send(:puts, *args, &bl)
     end
 
   end # class Command

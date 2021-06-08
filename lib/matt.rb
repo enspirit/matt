@@ -1,3 +1,4 @@
+require 'date'
 require 'ostruct'
 require 'bmg'
 require 'path'
