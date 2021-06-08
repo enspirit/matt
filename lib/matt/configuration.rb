@@ -6,9 +6,11 @@ module Matt
       @csv_options = {
         :write_headers => true
       }
+      @at_predicate = Matt.yesterday_predicate
     end
-    attr_reader :folder
-    attr_reader :csv_options
+    attr_accessor :folder
+    attr_accessor :csv_options
+    attr_accessor :at_predicate
 
     def datasources_folder
       folder/"datasources"

@@ -57,11 +57,12 @@ module Matt
     def do_show(argv)
       argv_count!(argv, 1)
       m = measure_exists!(argv.first)
+      data = m.full_data.restrict(configuration.at_predicate)
       case of = output_format
       when :json
-        puts_out JSON.pretty_generate(m.full_data)
+        puts_out JSON.pretty_generate(data)
       when :csv
-        puts_out m.full_data.to_csv(configuration.csv_options)
+        puts_out data.to_csv(configuration.csv_options)
       else
         puts_err "Unknown format #{of}"
       end
@@ -83,6 +84,15 @@ module Matt
             puts_err "No such folder: #{folder}"
             abort
           end
+        end
+        opts.on("--all-time") do
+          self.configuration.at_predicate = Matt.alltime_predicate
+        end
+        opts.on("--yesterday") do
+          self.configuration.at_predicate = Matt.yesterday_predicate
+        end
+        opts.on("--today") do
+          self.configuration.at_predicate = Matt.today_predicate
         end
         opts.on("--json") do
           self.output_format = :json

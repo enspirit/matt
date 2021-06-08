@@ -39,6 +39,39 @@ module Matt
         end
       end
 
+      context '--all-time' do
+        let(:argv){
+          %w{--all-time}
+        }
+
+        it 'set a true Predicate' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.tautology)
+        end
+      end
+
+      context '--yesterday' do
+        let(:argv){
+          %w{--yesterday}
+        }
+
+        it 'sets a Predicate for yesterday' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.gte(:at, Date.today - 1) & Predicate.lt(:at, Date.today))
+        end
+      end
+
+      context '--today' do
+        let(:argv){
+          %w{--today}
+        }
+
+        it 'sets a Predicate for today' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.gte(:at, Date.today) & Predicate.lt(:at, Date.today + 1))
+        end
+      end
+
     end
   end
 end
