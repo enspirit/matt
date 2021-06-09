@@ -53,7 +53,8 @@ module Matt
           raise "Wrong file #{file}, eval returned nil"
         else
           obj.configuration = self
-          memo.send("#{file.basename.rm_ext}=", obj)
+          obj.name = file.basename.rm_ext.to_s
+          memo.send("#{obj.name}=", obj)
         end
       end
     end

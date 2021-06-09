@@ -17,6 +17,8 @@ module Matt
 
       it 'sets loaded objects to it' do
         expect(subject.main).to be_a(Matt::Datasource)
+        expect(subject.main.configuration).to be(config)
+        expect(subject.main.name).to eql("main")
       end
     end
 
