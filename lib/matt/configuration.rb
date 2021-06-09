@@ -21,7 +21,7 @@ module Matt
     end
 
     def datasources
-      @datasources ||= load_dynamic_objects(datasources_folder)
+      @datasources ||= load_dynamic_objects(datasources_folder, Matt::Datasource)
     end
     alias :ds :datasources
 
@@ -30,7 +30,7 @@ module Matt
     end
 
     def measures
-      @measures ||= load_dynamic_objects(measures_folder)
+      @measures ||= load_dynamic_objects(measures_folder, Matt::Measure)
     end
     alias :ms :measures
 
@@ -39,18 +39,20 @@ module Matt
     end
 
     def exporters
-      @exporters ||= load_dynamic_objects(exporters_folder)
+      @exporters ||= load_dynamic_objects(exporters_folder, Matt::Exporter)
     end
     alias :es :exporters
 
   private
 
-    def load_dynamic_objects(datasources_folder)
+    def load_dynamic_objects(folder, expected_type)
       struct = OpenStruct.new
-      datasources_folder.glob("*.rb").each_with_object(struct) do |file,memo|
+      folder.glob("*.rb").each_with_object(struct) do |file,memo|
         obj = load_dynamic_object(file)
         if obj.nil?
-          raise "Wrong file #{file}, eval returned nil"
+          raise "Wrong file #{file}: eval returned nil"
+        elsif !obj.is_a?(expected_type)
+          raise "Wrong file #{file}: must include #{expected_type}"
         else
           obj.configuration = self
           obj.name = file.basename.rm_ext.to_s
