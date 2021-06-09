@@ -5,3 +5,4 @@ Dockerfile.built
 Dockerfile.log
 Dockerfile.pushed
 spec/unit/exporter/measures.sqlite
+spec/fixtures/helloworld/datasources/sql-ds.sqlite

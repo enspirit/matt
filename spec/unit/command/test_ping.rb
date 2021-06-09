@@ -17,7 +17,7 @@ module Matt
         it 'pings that one' do
           subject
           expect(command.stderr.string).to eql("")
-          expect(command.stdout.string).to eql("Ok.\n")
+          expect(command.stdout.string).to eql("main -- Ok.\n")
           expect(command.exitcode).to eql(0)
         end
       end
@@ -28,7 +28,8 @@ module Matt
         it 'pings them all' do
           subject
           expect(command.stderr.string).to eql("")
-          expect(command.stdout.string).to eql("Ok.\n")
+          expect(command.stdout.string).to match(/main -- Ok.\n/)
+          expect(command.stdout.string).to match(/sqlite(.*?)Ok.\n/)
           expect(command.exitcode).to eql(0)
         end
       end

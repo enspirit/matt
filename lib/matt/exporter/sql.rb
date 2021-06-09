@@ -3,13 +3,24 @@ module Matt
     class Sql
       include Matt::Exporter
 
-      def initialize(config)
-        @config = config
+      def initialize(arg)
+        case @config = arg
+        when String
+        when Hash
+        when Sequel::Database
+        when Matt::Datasource::Sql
+        else
+          raise ArgumentError, "Unable to use `#{arg}` to create an Sql exporter"
+        end
       end
       attr_reader :config
 
       def sequel_db
-        @sequel_db ||= Sequel.connect(config)
+        @sequel_db ||= case config
+        when Sequel::Database      then config
+        when Matt::Datasource::Sql then config.sequel_db
+        else Sequel.connect(config)
+        end
       end
 
       def export(measure, data)

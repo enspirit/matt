@@ -19,6 +19,28 @@ module Matt
         helloworld_config.ms.account_creations
       }
 
+      describe "new" do
+        it 'accepts a sequel_db' do
+          db = Sequel.connect(config)
+          got = Sql.new(db)
+          expect(got.sequel_db).to be(db)
+          expect(got.config).to be(db)
+        end
+
+        it 'accepts a datasource' do
+          ds = helloworld_config.ds.sql
+          got = Sql.new(ds)
+          expect(got.sequel_db).to be(ds.sequel_db)
+          expect(got.config).to be(ds)
+        end
+
+        it 'accepts a config' do
+          got = Sql.new(config)
+          expect(got.sequel_db).to be_a(Sequel::Database)
+          expect(got.config).to be(config)
+        end
+      end
+
       context "when the table does not exist yet" do
         before do
           sqlite_file.unlink rescue nil

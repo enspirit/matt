@@ -37,7 +37,7 @@ class Main
   end
 
   def ping
-    puts "Ok."
+    puts "main -- Ok."
   end
 
 end
