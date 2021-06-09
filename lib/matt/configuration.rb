@@ -62,7 +62,7 @@ module Matt
     end
 
     def load_dynamic_object(file)
-      Kernel.eval(file.read, nil, file.to_s)
+      self.instance_eval(file.read, file.to_s)
     end
 
   end # class Configuration
