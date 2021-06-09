@@ -5,9 +5,11 @@ module Matt
 
     attr_accessor :exitcode
     attr_accessor :output_format
+    attr_accessor :to
 
     def initialize
       @output_format = :csv
+      @to = nil
       yield(self) if block_given?
     end
 
@@ -86,6 +88,16 @@ module Matt
       end
     end
 
+    def do_export(argv)
+      argv_count!(argv, 1)
+      m = measure_exists!(argv.first)
+      data = m.full_data.restrict(configuration.at_predicate)
+      (@to || m.exporters).each do |e|
+        exporter = exporter_exists!(e)
+        exporter.export(m, data)
+      end
+    end
+
   protected
 
     def opt_parser
@@ -111,6 +123,11 @@ module Matt
         end
         opts.on("--today") do
           self.configuration.at_predicate = Matt.today_predicate
+        end
+        opts.on("--to=EXPORTERS") do |exporters|
+          @to = (@to || []) + exporters.split(/\s*,\s*/).map{|e|
+            exporter_exists!(e.to_sym).name
+          }
         end
         opts.on("--json") do
           self.output_format = :json
@@ -139,6 +156,13 @@ module Matt
       m = configuration.measures.send(name.to_sym)
       return m if m
       puts_err "No such measure #{name}"
+      abort
+    end
+
+    def exporter_exists!(name)
+      m = configuration.exporters.send(name.to_sym)
+      return m if m
+      puts_err "No such exporter #{name}"
       abort
     end
 

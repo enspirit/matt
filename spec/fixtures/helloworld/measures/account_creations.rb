@@ -6,7 +6,7 @@ class AccountCreations
   end
 
   def exporters
-    %w{ debug }
+    %w{ stdout }
   end
 
   def dimensions

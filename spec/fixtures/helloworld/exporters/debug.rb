@@ -1,9 +1,9 @@
-class Stdout
+class Debug
   include Matt::Exporter
 
   def export(measure, data)
-    puts data.to_json
+    puts data.debug
   end
 
 end
-Stdout.new
+Debug.new
