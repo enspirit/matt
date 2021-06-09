@@ -5,6 +5,13 @@ require 'bmg'
 require 'path'
 module Matt
 
+  def env(which, default = nil)
+    val = ENV.has_key?(which) ? ENV[which] : default
+    val = val.strip if val.is_a?(String)
+    val
+  end
+  module_function :env
+
   def alltime_predicate
     Predicate.tautology
   end
