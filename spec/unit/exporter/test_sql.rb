@@ -26,21 +26,21 @@ module Matt
 
         it 'works fine' do
           exporter.export(measure, measure.full_data)
-          expect(exporter.sequel_db[:account_creations].count).to eql(4)
+          expect(exporter.sequel_db[:account_creations].count).to eql(6)
         end
 
         it 'is idempotent in terms of data' do
           exporter.export(measure, measure.full_data)
-          expect(exporter.sequel_db[:account_creations].count).to eql(4)
+          expect(exporter.sequel_db[:account_creations].count).to eql(6)
           exporter.export(measure, measure.full_data)
-          expect(exporter.sequel_db[:account_creations].count).to eql(4)
+          expect(exporter.sequel_db[:account_creations].count).to eql(6)
         end
 
         it 'is lets import gradually' do
-          exporter.export(measure, measure.full_data.page([:at], 1, :page_size => 2))
-          expect(exporter.sequel_db[:account_creations].count).to eql(2)
-          exporter.export(measure, measure.full_data.page([:at], 2, :page_size => 2))
-          expect(exporter.sequel_db[:account_creations].count).to eql(4)
+          exporter.export(measure, measure.full_data.page([:at], 1, :page_size => 3))
+          expect(exporter.sequel_db[:account_creations].count).to eql(3)
+          exporter.export(measure, measure.full_data.page([:at], 2, :page_size => 3))
+          expect(exporter.sequel_db[:account_creations].count).to eql(6)
         end
       end
 
@@ -48,9 +48,9 @@ module Matt
         before do
           sqlite_file.unlink rescue nil
           exporter.sequel_db.create_table(:account_creations) do
-            column :at, Date
-            column :count, Integer
-            column :outdated, String
+            column :at, Date, null: true
+            column :count, Integer, null: true
+            column :outdated, String, null: true
           end
           exporter.sequel_db[:account_creations].multi_insert([
             {:at => Date.parse("2019-01-01", :count => 92)}
@@ -59,7 +59,7 @@ module Matt
 
         it 'aligns the schema correctly' do
           exporter.export(measure, measure.full_data)
-          expect(exporter.sequel_db[:account_creations].count).to eql(5)
+          expect(exporter.sequel_db[:account_creations].count).to eql(7)
         end
       end
 

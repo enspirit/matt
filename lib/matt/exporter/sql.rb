@@ -1,6 +1,7 @@
 module Matt
   module Exporter
     class Sql
+      include Matt::Exporter
 
       def initialize(config)
         @config = config
@@ -53,7 +54,7 @@ module Matt
             drop_column(out)
           end
           missing.each_pair do |mis, type|
-            add_column(mis, type)
+            add_column(mis, type, null: true)
           end
         end
       end
@@ -62,12 +63,11 @@ module Matt
         sequel_db.create_table(tb_name) do
           column(:at, Date)
           measure.dimensions.each do |name,type|
-            column(name, type)
+            column(name, type, :null => true)
           end
           measure.metrics.each do |name,type|
-            column(name, type)
+            column(name, type, :null => true)
           end
-          primary_key [:at] + measure.dimensions.keys
         end
       end
 

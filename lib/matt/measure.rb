@@ -9,6 +9,10 @@ module Matt
       {}
     end
 
+    def exporters
+      []
+    end
+
     def metrics
       raise NotImplementedError, "#{self} must implement `metrics`"
     end

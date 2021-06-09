@@ -1,9 +1,10 @@
 require 'date'
 require 'ostruct'
 require 'json'
+require 'sequel'
 require 'bmg'
 require 'path'
-require 'sequel'
+require 'bmg/sequel'
 module Matt
 
   def env(which, default = nil)
