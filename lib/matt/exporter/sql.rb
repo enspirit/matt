@@ -13,6 +13,8 @@ module Matt
       end
 
       def export(measure, data)
+        now = Time.now
+        data = data.constants(:created_at => now)
         table = ensure_table!(measure)
         remove_old_data!(table, data)
         insert_new_data!(table, data)
@@ -42,7 +44,7 @@ module Matt
 
       def align_table!(tb_name, measure, fields)
         schema   = sequel_db.schema(tb_name)
-        existing = schema.map{|s| s.first }
+        existing = schema.map{|s| s.first } - [:created_at]
         missing  = fields - existing
         missing  = measure.dimensions.merge(measure.metrics).select{|x|
           missing.include?(x)
@@ -61,7 +63,8 @@ module Matt
 
       def create_table!(tb_name, measure, fields)
         sequel_db.create_table(tb_name) do
-          column(:at, Date)
+          column(:at, Date, :null => false)
+          column(:created_at, :timestamp, :null => false)
           measure.dimensions.each do |name,type|
             column(name, type, :null => true)
           end

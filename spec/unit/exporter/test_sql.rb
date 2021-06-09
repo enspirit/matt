@@ -48,12 +48,13 @@ module Matt
         before do
           sqlite_file.unlink rescue nil
           exporter.sequel_db.create_table(:account_creations) do
-            column :at, Date, null: true
+            column :at, Date, null: false
+            column :created_at, :timestamp, null: false
             column :count, Integer, null: true
             column :outdated, String, null: true
           end
           exporter.sequel_db[:account_creations].multi_insert([
-            {:at => Date.parse("2019-01-01", :count => 92)}
+            {:at => Date.parse("2019-01-01"), :created_at => Time.now, :count => 92}
           ])
         end
 
