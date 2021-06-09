@@ -63,7 +63,7 @@ the last scenario while also having your own docker image for the component.
 This is a good basis for a Dockerfile:
 
 ```
-FROM enspirit/matt
+FROM enspirit/matt   # or from ruby-3.0:alpine
 
 COPY Gemfile .
 RUN bundle install
@@ -77,6 +77,28 @@ follows:
 ```
 docker run my/matt --help
 ```
+
+In such a scenario, you may want to use Matt's version that exists in the
+docker container instead without having to specify it in the Gemfile.
+The following Gemfile hack works:
+
+```
+gem "matt", path: "/matt"
+```
+
+## Semantics versioning
+
+Matt uses semantics versioning since 1.0.
+
+The public API consists in:
+
+* Matt public methods
+* Matt::Configuration public methods
+* Matt::Datasource public & protected methods exposed to including classes
+* Matt::Exporter (same)
+* Matt::Measure (same)
+* `matt` commandline and its options
+* `enspirit/matt` docker image with `/matt` and `/home/matt` behavior
 
 ## Contribute
 

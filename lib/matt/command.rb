@@ -1,3 +1,28 @@
+#/
+#/ Matt - A monitoring tool for data-driven business decisions
+#/ vVERSION - (c) Enspirit SRL, 2021 and beyond
+#/
+#/ Usage: matt [-f folder] command [options...] [args...]
+#/
+#/ show measure           Show the datapoints of a given measure
+#/ export measure*        Export all (or specific) measure(s) to
+#/ ping datasource*       Ping all (or specific) datasource(s)
+#/                        their default exporters
+#/
+#/ -f FOLDER              Use the folder as entry point (`pwd` by default)
+#/     --all-time         Do not restrict measures shown/exported
+#/     --today            Only show/export measures for today
+#/     --yesterday        Only show/export measures for yesterday's (default)
+#/     --to=exporter,...  Override the default exporters
+#/     --json             Use json when displaying measures on console
+#/     --csv              Use csv when displaying measures on console (default)
+#/ -h, --help             Show this help message
+#/     --version          Show matt version
+#/
+#/ Examples:
+#/     matt show --all-time --json account_creations
+#/     matt export --today --to=sql,prometheus account_creations
+#/
 require 'optparse'
 module Matt
   class Command
@@ -98,6 +123,11 @@ module Matt
       end
     end
 
+    def do_help(*args)
+      file = __FILE__
+      exec "grep ^#/<'#{file}'|cut -c4-|sed s/VERSION/#{Matt::VERSION}/g"
+    end
+
   protected
 
     def opt_parser
@@ -140,7 +170,7 @@ module Matt
           abort
         end
         opts.on("-h", "--help", "Prints this help") do
-          puts_out opts
+          do_help
           abort
         end
       end
