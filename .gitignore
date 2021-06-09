@@ -4,3 +4,4 @@ Gemfile.lock
 Dockerfile.built
 Dockerfile.log
 Dockerfile.pushed
+spec/unit/exporter/measures.sqlite
