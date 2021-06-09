@@ -7,12 +7,14 @@ Gem::Specification.new do |s|
   s.version     = Matt::VERSION
   s.date        = Date.today.to_s
   s.summary     = "Matt help monitoring data points for better business decision."
-  s.description = ""
+  s.description = "Matt help monitoring data points for better business decision."
   s.authors     = ["Bernard Lambeau"]
   s.email       = 'blambeau@gmail.com'
-  s.files       = Dir['LICENSE.md', 'Gemfile','Rakefile', '{bin,lib}/**/*', 'README.md']
+  s.files       = Dir['LICENSE.md','README.md','Gemfile','{bin,lib}/**/*']
   s.homepage    = 'http://github.com/enspirit/matt'
   s.license     = 'MIT'
+
+  s.bindir = "bin"
   s.executables = (Dir["bin/*"]).collect{|f| File.basename(f)}
 
   s.add_dependency "path", ">= 2.0", "< 3.0"
