@@ -9,6 +9,14 @@ class AccountCreations
     %w{ debug }
   end
 
+  def dimensions
+    { :country => String }
+  end
+
+  def metrics
+    { :count => Integer }
+  end
+
   def full_data
     ds.main.account_creations
   end

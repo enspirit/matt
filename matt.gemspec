@@ -17,7 +17,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency "path", ">= 2.0", "< 3.0"
   s.add_dependency "bmg", ">= 0.18.5", "< 0.19"
+  s.add_dependency "sequel", ">= 5.0", "< 6.19"
 
   s.add_development_dependency "rake", ">= 13.0", "< 14.0"
   s.add_development_dependency "rspec", ">= 3.10", "< 4.0"
+  s.add_development_dependency "sqlite3", ">= 1.4.2", "< 2.0"
 end

@@ -3,6 +3,7 @@ require 'ostruct'
 require 'json'
 require 'bmg'
 require 'path'
+require 'sequel'
 module Matt
 
   def env(which, default = nil)

@@ -5,6 +5,14 @@ module Matt
     attr_accessor :name
     attr_accessor :configuration
 
+    def dimensions
+      {}
+    end
+
+    def metrics
+      raise NotImplementedError, "#{self} must implement `metrics`"
+    end
+
     def ds
       configuration.datasources
     end

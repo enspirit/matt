@@ -7,3 +7,4 @@ module Matt
 
   end # module Exporter
 end # module Matt
+require_relative 'exporter/sql'
