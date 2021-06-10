@@ -1,6 +1,10 @@
 module Matt
   class Configuration
 
+    DEBUG_SILENT = 0
+    DEBUG_INFO = 1
+    DEBUG_VERBOSE = 2
+
     def initialize(folder)
       @folder = folder
       @stdout = $stdout
@@ -9,12 +13,14 @@ module Matt
         :write_headers => true
       }
       @at_predicate = Matt.yesterday_predicate
+      @debug_level = DEBUG_INFO
       yield(self) if block_given?
     end
     attr_accessor :folder
     attr_accessor :stdout, :stderr
     attr_accessor :csv_options
     attr_accessor :at_predicate
+    attr_accessor :debug_level
 
     def datasources_folder
       folder/"datasources"

@@ -75,6 +75,28 @@ module Matt
         end
       end
 
+      context '--silent' do
+        let(:argv){
+          %w{--silent}
+        }
+
+        it 'sets the correct debug level' do
+          expect(subject).to eql([])
+          expect(command.configuration.debug_level).to eql(Configuration::DEBUG_SILENT)
+        end
+      end
+
+      context '--verbose' do
+        let(:argv){
+          %w{--verbose}
+        }
+
+        it 'sets the correct debug level' do
+          expect(subject).to eql([])
+          expect(command.configuration.debug_level).to eql(Configuration::DEBUG_VERBOSE)
+        end
+      end
+
     end
   end
 end

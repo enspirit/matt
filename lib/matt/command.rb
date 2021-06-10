@@ -16,6 +16,8 @@
 #/     --to=exporter,...  Override the default exporters
 #/     --json             Use json when displaying measures on console
 #/     --csv              Use csv when displaying measures on console (default)
+#/     --silent           Do not print any info/debug messages
+#/     --verbose          Print debug information in addition to info messages
 #/ -h, --help             Show this help message
 #/     --version          Show matt version
 #/
@@ -168,6 +170,12 @@ module Matt
         opts.on('--version', "Show version number") do
           puts_out "Matt v#{VERSION} - (c) Enspirit SRL"
           abort
+        end
+        opts.on("--silent") do
+          self.configuration.debug_level = Configuration::DEBUG_SILENT
+        end
+        opts.on("--verbose") do
+          self.configuration.debug_level = Configuration::DEBUG_VERBOSE
         end
         opts.on("-h", "--help", "Prints this help") do
           do_help
