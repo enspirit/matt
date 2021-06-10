@@ -1,4 +1,4 @@
-## 1.1
+## 1.1 - 2021-06-10
 
 * Added `Matt.env!` to use an env variable that must exist.
 
