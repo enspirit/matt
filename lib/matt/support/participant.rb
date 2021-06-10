@@ -10,8 +10,12 @@ module Matt
         raise UnexpectedError, message
       end
 
+      def class_name
+        self.class.name.gsub /#<Class(.*?)>::/, ""
+      end
+
       def to_s
-        "#{self.class.name}(#{self.name})"
+        "#{class_name}(#{self.name})"
       end
 
     end # module Participant
