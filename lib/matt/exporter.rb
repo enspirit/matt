@@ -1,9 +1,10 @@
 module Matt
   module Exporter
-    include Support::Puts
+    include Support::Participant
 
-    attr_accessor :name
-    attr_accessor :configuration
+    def export(measure, data)
+      raise NotImplementedError, "#{self} should implement `export`"
+    end
 
   end # module Exporter
 end # module Matt

@@ -1,9 +1,6 @@
 module Matt
   module Measure
-    include Support::Puts
-
-    attr_accessor :name
-    attr_accessor :configuration
+    include Support::Participant
 
     def dimensions
       {}
