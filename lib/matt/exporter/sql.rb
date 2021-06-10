@@ -35,11 +35,16 @@ module Matt
 
       def remove_old_data!(table, data)
         dates = data.project([:at]).map{|t| t[:at] }
-        table.where(:at => dates).delete
+        count = table.where(:at => dates).delete
+        info("Removed #{count} rows.")
+        count
       end
 
       def insert_new_data!(table, data)
-        table.multi_insert(data.to_a)
+        data = data.to_a
+        result = table.multi_insert(data)
+        info("Inserted #{data.size} rows.")
+        result
       end
 
       def ensure_table!(measure)
@@ -62,6 +67,7 @@ module Matt
         }
         outdated = existing - fields
         return if missing.empty? && outdated.empty?
+        debug("ALTER table #{tb_name}\n  Outdated: #{outdated.join(', ')}\n  New: #{missing.keys.join(', ')}")
         sequel_db.alter_table(tb_name) do
           outdated.each do |out|
             drop_column(out)
@@ -73,6 +79,7 @@ module Matt
       end
 
       def create_table!(tb_name, measure, fields)
+        debug("CREATE table #{tb_name}\n  Dimensions: #{measure.dimensions.keys.join(', ')}\n  Metrics: #{measure.metrics.keys.join(', ')}")
         sequel_db.create_table(tb_name) do
           column(:at, Date, :null => false)
           column(:created_at, :timestamp, :null => false)
