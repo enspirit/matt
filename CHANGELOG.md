@@ -1,4 +1,9 @@
-## 1.1 - 2021-06-10
+## 1.1.1
+
+* `matt export` now correctly support a variable number of measure names.
+  Passing no measure name exports them all.
+
+## 1.1.0 - 2021-06-10
 
 * Added `Matt.env!` to use an env variable that must exist.
 

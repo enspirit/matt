@@ -22,6 +22,28 @@ module Matt
         end
       end
 
+      context 'with no options and more than one metric' do
+        let(:argv){ %w{export account_creations account_updates} }
+
+        it 'exports the metrics to their default exporters' do
+          subject
+          expect(command.stderr.string).to eql("")
+          expect(command.stdout.string).to eql("[]\n[]\n")
+          expect(command.exitcode).to eql(0)
+        end
+      end
+
+      context 'with no options and no metric at all' do
+        let(:argv){ %w{export} }
+
+        it 'exports them all' do
+          subject
+          expect(command.stderr.string).to eql("")
+          expect(command.stdout.string).to eql("[]\n[]\n")
+          expect(command.exitcode).to eql(0)
+        end
+      end
+
       context 'specifying the exporter(s)' do
         let(:argv){ %w{export --to=stdout,debug account_creations} }
 

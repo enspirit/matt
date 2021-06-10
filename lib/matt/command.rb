@@ -105,23 +105,20 @@ module Matt
     end
 
     def do_ping(argv)
-      which_ones = if argv.empty?
-        configuration.datasources.to_h.values
-      else
-        argv.map{|arg| datasource_exists!(arg) }
-      end
+      which_ones = argv_to_xs(argv, :datasources)
       which_ones.each do |d|
         d.ping
       end
     end
 
     def do_export(argv)
-      argv_count!(argv, 1)
-      m = measure_exists!(argv.first)
-      data = m.full_data.restrict(configuration.at_predicate)
-      (@to || m.exporters).each do |e|
-        exporter = exporter_exists!(e)
-        exporter.export(m, data)
+      which_ones = argv_to_xs(argv, :measures)
+      which_ones.each do |m|
+        data = m.full_data.restrict(configuration.at_predicate)
+        (@to || m.exporters).each do |e|
+          exporter = exporter_exists!(e)
+          exporter.export(m, data)
+        end
       end
     end
 
@@ -190,25 +187,31 @@ module Matt
       abort
     end
 
-    def measure_exists!(name)
-      m = configuration.measures.send(name.to_sym)
-      return m if m
-      puts_err "No such measure #{name}"
+    def x_exists!(name, xs)
+      x = configuration.send(xs).send(name.to_sym)
+      return x if x
+      puts_err "No such #{xs[0...-1]} #{name}"
       abort
+    end
+
+    def measure_exists!(name)
+      x_exists!(name, :measures)
     end
 
     def exporter_exists!(name)
-      m = configuration.exporters.send(name.to_sym)
-      return m if m
-      puts_err "No such exporter #{name}"
-      abort
+      x_exists!(name, :exporters)
     end
 
     def datasource_exists!(name)
-      d = configuration.datasources.send(name.to_sym)
-      return d if d
-      puts_err "No such datasource #{name}"
-      abort
+      x_exists!(name, :datasources)
+    end
+
+    def argv_to_xs(argv, xs)
+      if argv.empty?
+        configuration.send(xs).to_h.values
+      else
+        argv.map{|arg| x_exists!(arg, xs) }
+      end
     end
 
     def abort

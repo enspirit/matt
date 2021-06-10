@@ -36,6 +36,16 @@ class Main
     ])
   end
 
+  def account_updates
+    Bmg::Relation.new([
+      {
+        :at => Date.parse("2021-01-01"),
+        :country => "US",
+        :count => 2
+      }
+    ])
+  end
+
   def ping
     puts "main -- Ok."
   end
