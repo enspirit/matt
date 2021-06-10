@@ -1,3 +1,7 @@
+## 1.1
+
+* Added `Matt.env!` to use an env variable that must exist.
+
 ## 1.0.0 - 2021-06-09
 
 * First official version used in production.

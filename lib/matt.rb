@@ -7,12 +7,21 @@ require 'path'
 require 'bmg/sequel'
 module Matt
 
+  class Error < StandardError; end
+  class UnexpectedError < Error; end
+
   def env(which, default = nil)
     val = ENV.has_key?(which) ? ENV[which] : default
     val = val.strip if val.is_a?(String)
     val
   end
   module_function :env
+
+  def env!(which)
+    raise Matt::Error, "Missing env var `#{which}`" unless ENV.has_key?(which)
+    env(which)
+  end
+  module_function :env!
 
   def alltime_predicate
     Predicate.tautology
