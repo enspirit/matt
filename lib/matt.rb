@@ -38,6 +38,12 @@ module Matt
   end
   module_function :today_predicate
 
+  def last_predicate(arg)
+    raise Error, "Invalid predicate `#{arg}`" unless arg.strip =~ /^(\d+)days$/
+    Predicate.gte(:at, Date.today - $1.to_i) & Predicate.lt(:at, Date.today + 1)
+  end
+  module_function :last_predicate
+
 end # module Matt
 require_relative 'matt/version'
 require_relative 'matt/support'

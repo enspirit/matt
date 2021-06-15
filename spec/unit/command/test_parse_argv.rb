@@ -75,6 +75,17 @@ module Matt
         end
       end
 
+      context '--last' do
+        let(:argv){
+          %w{--last=7days}
+        }
+
+        it 'sets a Predicate for the last 7 days' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.gte(:at, Date.today - 7) & Predicate.lt(:at, Date.today + 1))
+        end
+      end
+
       context '--silent' do
         let(:argv){
           %w{--silent}

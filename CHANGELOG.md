@@ -5,6 +5,9 @@
   implementation is backward compatible and simply restrict the relation
   sent by `full_data`.
 
+* Add `--last=Ndays` commandline option, to select a time window with N
+  days in the past (today included).
+
 ## 1.1.1
 
 * `matt export` now correctly support a variable number of measure names.

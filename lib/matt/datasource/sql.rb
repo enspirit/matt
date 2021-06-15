@@ -24,8 +24,8 @@ module Matt
         end
       end
 
-      def sequel(*args)
-        Bmg.sequel(*args)
+      def sequel(table, type = nil)
+        Bmg.sequel(*[table, type, sequel_db].compact)
       end
 
     end

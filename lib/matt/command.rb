@@ -153,6 +153,9 @@ module Matt
         opts.on("--today") do
           self.configuration.at_predicate = Matt.today_predicate
         end
+        opts.on("--last=X") do |x|
+          self.configuration.at_predicate = Matt.last_predicate(x)
+        end
         opts.on("--to=EXPORTERS") do |exporters|
           @to = (@to || []) + exporters.split(/\s*,\s*/).map{|e|
             exporter_exists!(e.to_sym).name
