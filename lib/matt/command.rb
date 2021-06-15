@@ -93,7 +93,7 @@ module Matt
     def do_show(argv)
       argv_count!(argv, 1)
       m = measure_exists!(argv.first)
-      data = m.full_data.restrict(configuration.at_predicate)
+      data = m.data_at(configuration.at_predicate).debug
       case of = output_format
       when :json
         puts_out JSON.pretty_generate(data)

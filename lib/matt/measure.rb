@@ -18,5 +18,13 @@ module Matt
       configuration.datasources
     end
 
+    def data_at(at_predicate)
+      full_data.restrict(at_predicate)
+    end
+
+    def full_data
+      raise NotImplementedError, "#{self} must implement `full_data`"
+    end
+
   end # module Measure
 end # module Matt

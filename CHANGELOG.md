@@ -1,3 +1,10 @@
+## 1.2.0
+
+* Add `Measure#data_at(at_predicate)` to let Measure fine-tune queries
+  themselves (such as pushing the predicate down a Bmg tree). The default
+  implementation is backward compatible and simply restrict the relation
+  sent by `full_data`.
+
 ## 1.1.1
 
 * `matt export` now correctly support a variable number of measure names.
