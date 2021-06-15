@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Build failure, bumping on intent.
+
 ## 1.2.0
 
 * Add `Measure#data_at(at_predicate)` to let Measure fine-tune queries
