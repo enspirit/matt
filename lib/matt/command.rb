@@ -13,6 +13,8 @@
 #/     --all-time         Do not restrict measures shown/exported
 #/     --today            Only show/export measures for today
 #/     --yesterday        Only show/export measures for yesterday's (default)
+#/     --last=Ndays       Only show/export measures for the last N days
+#/     --since=date       Only show/export measures since a given date (YYYY-MM-DD)
 #/     --to=exporter,...  Override the default exporters
 #/     --json             Use json when displaying measures on console
 #/     --csv              Use csv when displaying measures on console (default)
@@ -155,6 +157,9 @@ module Matt
         end
         opts.on("--last=X") do |x|
           self.configuration.at_predicate = Matt.last_predicate(x)
+        end
+        opts.on("--since=X") do |x|
+          self.configuration.at_predicate = Matt.since_predicate(x)
         end
         opts.on("--to=EXPORTERS") do |exporters|
           @to = (@to || []) + exporters.split(/\s*,\s*/).map{|e|

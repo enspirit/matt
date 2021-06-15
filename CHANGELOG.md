@@ -8,6 +8,9 @@
 * Add `--last=Ndays` commandline option, to select a time window with N
   days in the past (today included).
 
+* Add `--since=date` commandline option, to select a time window since a
+  particular date.
+
 ## 1.1.1
 
 * `matt export` now correctly support a variable number of measure names.

@@ -86,6 +86,17 @@ module Matt
         end
       end
 
+      context '--since' do
+        let(:argv){
+          %w{--since=2021-02-13}
+        }
+
+        it 'sets a Predicate since the passed date' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.gte(:at, Date.parse("2021-02-13")) & Predicate.lt(:at, Date.today + 1))
+        end
+      end
+
       context '--silent' do
         let(:argv){
           %w{--silent}

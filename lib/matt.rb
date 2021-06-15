@@ -44,6 +44,12 @@ module Matt
   end
   module_function :last_predicate
 
+  def since_predicate(arg)
+    raise Error, "Invalid predicate `#{arg}`" unless since = Date.parse(arg)
+    Predicate.gte(:at, since) & Predicate.lt(:at, Date.today + 1)
+  end
+  module_function :since_predicate
+
 end # module Matt
 require_relative 'matt/version'
 require_relative 'matt/support'
