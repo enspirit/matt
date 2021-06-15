@@ -7,7 +7,7 @@ RUN apk update \
 
 COPY matt.gemspec Gemfile ./
 COPY lib/matt/version.rb lib/matt/version.rb
-RUN bundle install
+RUN bundle install --full-index
 RUN apk del --purge build-base sqlite-dev
 
 COPY . .
