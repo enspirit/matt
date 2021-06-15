@@ -11,6 +11,9 @@
 * Add `--since=date` commandline option, to select a time window since a
   particular date.
 
+* Add `--between=from,to` commandline option, to select a time window between
+  two dates.
+
 ## 1.1.1
 
 * `matt export` now correctly support a variable number of measure names.

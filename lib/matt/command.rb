@@ -15,6 +15,7 @@
 #/     --yesterday        Only show/export measures for yesterday's (default)
 #/     --last=Ndays       Only show/export measures for the last N days
 #/     --since=date       Only show/export measures since a given date (YYYY-MM-DD)
+#/     --between=from,to  Only show/export measures between two dates (YYYY-MM-DD)
 #/     --to=exporter,...  Override the default exporters
 #/     --json             Use json when displaying measures on console
 #/     --csv              Use csv when displaying measures on console (default)
@@ -95,7 +96,8 @@ module Matt
     def do_show(argv)
       argv_count!(argv, 1)
       m = measure_exists!(argv.first)
-      data = m.data_at(configuration.at_predicate).debug
+      data = m.data_at(configuration.at_predicate)
+      debug("show -- #{data.inspect}")
       case of = output_format
       when :json
         puts_out JSON.pretty_generate(data)
@@ -116,7 +118,8 @@ module Matt
     def do_export(argv)
       which_ones = argv_to_xs(argv, :measures)
       which_ones.each do |m|
-        data = m.full_data.restrict(configuration.at_predicate)
+        data = m.data_at(configuration.at_predicate)
+        debug("export -- #{data.inspect}")
         (@to || m.exporters).each do |e|
           exporter = exporter_exists!(e)
           exporter.export(m, data)
@@ -160,6 +163,9 @@ module Matt
         end
         opts.on("--since=X") do |x|
           self.configuration.at_predicate = Matt.since_predicate(x)
+        end
+        opts.on("--between=X,Y") do |arg|
+          self.configuration.at_predicate = Matt.between_predicate(*arg.split(','))
         end
         opts.on("--to=EXPORTERS") do |exporters|
           @to = (@to || []) + exporters.split(/\s*,\s*/).map{|e|

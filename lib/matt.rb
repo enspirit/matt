@@ -50,6 +50,13 @@ module Matt
   end
   module_function :since_predicate
 
+  def between_predicate(from, to)
+    raise Error, "Invalid predicate `#{arg}`" unless from = Date.parse(from)
+    raise Error, "Invalid predicate `#{arg}`" unless to = Date.parse(to)
+    Predicate.gte(:at, from) & Predicate.lt(:at, to)
+  end
+  module_function :between_predicate
+
 end # module Matt
 require_relative 'matt/version'
 require_relative 'matt/support'

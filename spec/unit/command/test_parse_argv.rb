@@ -97,6 +97,17 @@ module Matt
         end
       end
 
+      context '--between' do
+        let(:argv){
+          %w{--between=2021-02-13,2021-03-01}
+        }
+
+        it 'sets a Predicate between the two dates' do
+          expect(subject).to eql([])
+          expect(command.configuration.at_predicate).to eql(Predicate.gte(:at, Date.parse("2021-02-13")) & Predicate.lt(:at, Date.parse("2021-03-01")))
+        end
+      end
+
       context '--silent' do
         let(:argv){
           %w{--silent}
